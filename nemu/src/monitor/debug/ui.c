@@ -51,6 +51,32 @@ static int cmd_si(char *args){
 	return 0;
 }
 
+static int cmd_info(char *args){
+	char *arg = strtok(NULL, " ");
+	char cmd = 1;
+
+	if(arg == NULL) {
+		// no argument given
+		printf("the number of subcom is not true\n");
+	}
+	else {
+		sscanf(args, "%s", &cmd);
+		if(cmd == 'r'){
+			printf("Print register status\n");
+			int i;
+			for(i = R_EAX; i <= R_EDI; i++){
+				printf("$%s\t0x%08x\n",regsl[i],reg_l(i));
+			}
+			printf("$eip\t0x%08x\n",cpu.eip);
+		}
+		else if(cmd == 'w'){
+			printf("Print monitoring point information\n");
+			info_w();
+		}
+	}
+	return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -64,7 +90,7 @@ static struct {
 
 	/* TODO: Add more commands */
 	{ "si", "Execute the sequence", cmd_si},
-	//{ "info", "Print SUBCMD info", cmd_info},
+	{ "info", "Print SUBCMD info", cmd_info},
 	//{ "x", "Scan the memory", cmd_x},
 
 };
