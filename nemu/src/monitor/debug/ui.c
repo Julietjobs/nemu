@@ -77,6 +77,32 @@ static int cmd_info(char *args){
 	return 0;
 }
 
+static int cmd_x(char *args){
+	char *arg = strtok(NULL, " ");
+	if(arg == NULL){
+		printf("the number of subcom is not true\n");
+		return 0;
+	}
+	int n;
+	lnaddr_t exprs;
+	//sscanf(args, "%d%x", &n, &exprs);
+	sscanf(arg, "%d", &n);  
+    sscanf(arg, "%x", &exprs);  
+	int i;
+	
+	for(i = 0; i < n; i++){
+		if(i % 4 == 0)
+			printf("0x%08x", exprs + i*4);
+		printf("   0x%08x", swaddr_read(exprs + i*4, 4));
+		if((i+1) % 4 == 0) 
+			printf("\n");	
+	}
+	if((i+1) % 8) printf("\n");
+	return 0;
+	
+}
+
+
 static int cmd_help(char *args);
 
 static struct {
@@ -91,7 +117,7 @@ static struct {
 	/* TODO: Add more commands */
 	{ "si", "Execute the sequence", cmd_si},
 	{ "info", "Print SUBCMD info", cmd_info},
-	//{ "x", "Scan the memory", cmd_x},
+	{ "x", "Scan the memory", cmd_x},
 
 };
 
